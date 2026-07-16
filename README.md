@@ -95,7 +95,7 @@ dataset of `t2max, t2min, d2m, rh_tmax, rh_tmin, U, sp, ssrd` (times in UTC).
 python calc_spatial_WBGT_forecast.py
 ```
 Runs the Liljegren solver twice (warm and cool extreme) and writes
-`WBGT_forecast_output_YYYY-MM-DD.nc` with:
+`forecasts/WBGT_forecast_output_YYYY-MM-DD.nc` with:
 `WBGT_tmax`, `WBGT_tmin` (daytime / nighttime WBGT, °C) and the components
 `Tw_tmax, Tg_tmax, Tw_tmin, Tg_tmin`.
 
@@ -104,9 +104,9 @@ Runs the Liljegren solver twice (warm and cool extreme) and writes
 python postproc_WBGT_weekly_forecast.py
 ```
 Produces, for **Week 1** and **Week 2** of the forecast, into `plots/`:
-- **Summary** (`*_weekly_forecast_summary_*.png`) average of the daily maxima,
+- **Summary** (`plots/*_weekly_forecast_summary_*.png`) average of the daily maxima,
   weekly maximum WBGT, and frequency of WBGT above a threshold.
-- **Category** (`*_weekly_forecast_categories_*.png`) the weekly peak WBGT
+- **Category** (`plots/*_weekly_forecast_categories_*.png`) the weekly peak WBGT
   classified into operational heat-stress bands with work/rest guidance.
 
 Key settings at the top of the script: `VAR` (`WBGT_tmax` daytime or `WBGT_tmin`
