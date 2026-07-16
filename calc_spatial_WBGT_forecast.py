@@ -1,3 +1,18 @@
+#!/usr/bin/env python3
+# ============================================================================
+# calc_spatial_WBGT_forecast.py
+#
+# Driver that computes gridded Wet Bulb Globe Temperature (WBGT) from the
+# 6-hourly ECMWF forecast fields (ecmwf_forecasts4wbgt_YYYYMMDD.nc).
+#
+# Uses the Liljegren et al. (2008) model in wbgt_functions.py, solving twice
+# per step: warm extreme (t2max, rh_tmax) -> daytime WBGT, and cool extreme
+# (t2min, rh_tmin) -> nighttime WBGT. Writes WBGT_forecast_output_YYYY-MM-DD.nc
+# with WBGT_tmax, WBGT_tmin and their Tw/Tg components (degC).
+#
+# Developed by: @ICPAC
+# ============================================================================
+
 import xarray as xr
 import numpy as np
 from datetime import datetime, timezone
