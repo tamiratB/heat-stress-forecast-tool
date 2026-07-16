@@ -154,8 +154,8 @@ forecasts)**, produced by the European Centre for Medium-Range Weather Forecasts
 (ECMWF) with the Integrated Forecasting System (IFS).
 
 - **Source:** ECMWF https://www.ecmwf.int/en/forecasts/datasets/open-data
-- **Licence:** Creative Commons Attribution 4.0 International (**CC BY 4.0**) —
-  https://creativecommons.org/licenses/by/4.0/
+- **Licence:** Creative Commons Attribution 4.0 International (**CC BY 4.0**)
+https://creativecommons.org/licenses/by/4.0/
 
 In accordance with the CC BY 4.0 terms, when you redistribute this data or any
 product derived from it (including the maps produced here) you must:
@@ -190,7 +190,7 @@ modify, and distribute it, provided the conditions below are met.
 
 ### Mandatory acknowledgement of ICPAC
 
-Any **use, adaptation, or distribution** of this heat-stress forecast system — in
+Any **use, adaptation, or distribution** of this heat-stress forecast system - in
 whole or in part, including any forecast products, maps, or other outputs it
 generates **must** give clear and visible acknowledgement to the **IGAD Climate
 Prediction and Applications Centre (ICPAC)** as its originator. A statement
