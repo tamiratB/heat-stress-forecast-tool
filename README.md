@@ -117,7 +117,7 @@ shapefiles. Weeks are derived automatically from the run date.
 
 ## Example output
 
-Weekly WBGT heat-stress maps produced by `postproc_WBGT_weekly_forecast.py`
+Weekly heat-stress maps produced by `postproc_WBGT_weekly_forecast.py`
 (Greater Horn of Africa, sample run). Each **summary** figure shows, per forecast
 week, the average of the daily maxima, the weekly maximum WBGT, and the frequency
 of threshold exceedance; each **category** figure classifies the weekly peak WBGT
