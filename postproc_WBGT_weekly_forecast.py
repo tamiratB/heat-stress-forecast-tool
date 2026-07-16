@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """"
+================================================================================
 Weekly WBGT heat-stress summary maps from the 6-hourly WBGT forecast.
 
 Input : WBGT_forecast_output_YYYY-MM-DD.nc  (from calc_spatial_WBGT_forecast.py)
@@ -17,6 +18,7 @@ the recommended layout for briefing non-specialist decision makers.
 Times are handled in East Africa Time (UTC+3) so that "daily" maxima and
 the calendar weeks line up with the local day.
 Developed by: @ICPAC
+===============================================================================
 """
 
 import numpy as np

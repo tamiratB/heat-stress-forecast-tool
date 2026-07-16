@@ -1,6 +1,6 @@
+#!/usr/bin/env python3
 """
-wbgt_functions.py
-=================
+===================================================================
 Robust computation of the outdoor Wet-Bulb Globe Temperature (WBGT)
 from gridded daily meteorological data.
 
@@ -15,6 +15,7 @@ where
 ---------------------------------------------
 
 Developed by: Tamirat B. Jimma
+=====================================================================
 """
 
 import logging

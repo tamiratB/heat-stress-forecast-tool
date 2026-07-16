@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-# Prepare 6-hourly WBGT input fields (day/night heat stress) from ECMWF
-# open-data forecasts.
-# Developed by: @ICPAC
+"""
+=====================================================================
+Prepare 6-hourly WBGT input fields (day/night heat stress) from ECMWF
+open-data forecasts.
+Developed by: @ICPAC
+=====================================================================
+"""
 
 import glob
 import numpy as np
