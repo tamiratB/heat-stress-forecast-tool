@@ -3,6 +3,13 @@
 First release of a heat-stress forecasting tool for the Greater Horn of Africa,
 developed and tested using ECMWF open-data medium-range forecasts.
 
+The heat stress forecasting tool has been rigorously tested using 80 years of
+historical ERA5 reanalysis data to evaluate its performance across a wide range
+of climate conditions and extreme heat events. This extensive historical assessment
+has helped verify the robustness of the methodology, ensure the reliability of the
+forecast products, and build confidence in its application for operational heat stress
+monitoring and early warning over the Greater Horn of Africa.
+
 The pipeline downloads ECMWF IFS open-data forecasts, derives the meteorological
 inputs required by the WBGT model, computes gridded **daytime and nighttime WBGT**
 with the Liljegren et al. (2008) method, and produces weekly heat-stress summary
