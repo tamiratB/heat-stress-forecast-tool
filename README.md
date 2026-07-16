@@ -39,12 +39,12 @@ flowchart TD
     A[ECMWF open-data<br/>IFS 0.25 deg GRIB2] -->|download_ecmwf_open-data_forecast.py| B[ecmwf_forecasts_YYYYMMDD/]
     B -->|preproc_ecmwf2wbgt.py| C[ecmwf_forecasts4wbgt_YYYYMMDD.nc]
     C -->|calc_spatial_WBGT_forecast.py| D[WBGT_forecast_output_YYYY-MM-DD.nc]
-    D -->|postproc_WBGT_weekly_forecast.py| E[Weekly PNG maps in plots/]
+    D -->|postproc_WBGT_weekly_forecast.py| E[Weekly forecast PNG maps in plots/]
 ```
 
 **Forecast design.** ECMWF open data are published at 3-hourly steps out to 144 h
 and 6-hourly steps from 150–360 h. The pre-processor combines these into a
-**continuous 6-hourly series (0–360 h)**, pairing the interval maximum/minimum
+**continuous 6-hourly series (0-360 h)**, pairing the interval maximum/minimum
 2 m temperatures with matching humidity so that WBGT can be computed separately
 for the **hot (daytime)** and **cool (nighttime)** part of each 6-hour window.
 
@@ -70,7 +70,7 @@ export MPLBACKEND=Agg
 ```
 
 **Admin boundary shapefiles** are required by the post-processing step (to mask
-and clip maps to the region of interest). They are *not* bundled here. Point the
+and clip maps to the region of interest). They are not bundled here. Point the
 `ADMIN0` / `ADMIN1` paths in `postproc_WBGT_weekly_forecast.py` at your own
 shapefiles (default: `/data/shapefiles/gha/gha_admin0.shp` and `..._admin1.shp`).
 
@@ -101,7 +101,7 @@ dataset of `t2max, t2min, d2m, rh_tmax, rh_tmin, U, sp, ssrd` (times in UTC).
 ```bash
 python calc_spatial_WBGT_forecast.py
 ```
-Runs the Liljegren solver twice (warm and cool extreme) and writes
+Runs the main solver twice (warm and cool extreme) and writes
 `forecasts/WBGT_forecast_output_YYYY-MM-DD.nc` with:
 `WBGT_tmax`, `WBGT_tmin` (daytime / nighttime WBGT, °C) and the components
 `Tw_tmax, Tg_tmax, Tw_tmin, Tg_tmin`.
@@ -117,7 +117,7 @@ Produces, for **Week 1** and **Week 2** of the forecast, into `plots/`:
   classified into operational heat-stress bands with work/rest guidance.
 
 Key settings at the top of the script: `VAR` (`WBGT_tmax` daytime or `WBGT_tmin`
-nighttime), `THRESHOLD` (exceedance level, °C), `EXTENT`, and the `ADMIN0/ADMIN1`
+nighttime), `THRESHOLD` (exceedance level, °C), `EXTENT` domain of interest, and the `ADMIN0/ADMIN1`
 shapefiles. Weeks are derived automatically from the run date.
 
 ---
