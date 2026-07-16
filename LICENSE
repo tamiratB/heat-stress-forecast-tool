@@ -1,0 +1,40 @@
+Heat-Stress (WBGT) Forecast Tools — License
+
+Copyright (c) 2026 IGAD Climate Prediction and Applications Centre (ICPAC)
+
+This license is based on the MIT License, with an ADDITIONAL MANDATORY
+ATTRIBUTION REQUIREMENT (Condition 2) and an explicit DISCLAIMER OF
+RESPONSIBILITY (below).
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+2. Any use, adaptation, or distribution of the Software or of works derived
+   from it — including any forecast products, maps, or other outputs generated
+   with it — MUST give clear and visible acknowledgement to the IGAD Climate
+   Prediction and Applications Centre (ICPAC) as the originator of the
+   Software. A statement substantially in the following form satisfies this
+   requirement:
+
+       "Heat-stress (WBGT) forecast system developed by the IGAD Climate
+        Prediction and Applications Centre (ICPAC)."
+
+DISCLAIMER OF WARRANTY AND RESPONSIBILITY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. THE SOFTWARE AND ANY
+FORECASTS, MAPS, OR OTHER OUTPUTS IT PRODUCES ARE USED ENTIRELY AT THE USER'S
+OWN RISK AND RESPONSIBILITY. ICPAC DOES NOT WARRANT THE ACCURACY, RELIABILITY,
+OR FITNESS OF THE SOFTWARE OR ITS OUTPUTS FOR ANY PURPOSE AND SHALL NOT BE
+HELD RESPONSIBLE OR LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE, ITS OUTPUTS, OR THEIR USE OR OTHER DEALINGS IN
+THE SOFTWARE.

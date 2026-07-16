@@ -1,0 +1,38 @@
+# Conda environment for the WBGT heat-stress forecast pipeline
+# (download -> preproc -> WBGT calc -> weekly post-processing/plots).
+#
+# Versions pinned to match the working conda base environment (2026-07)
+# for reproducibility.
+#
+# Create:   conda env create -f environment.yml
+# Activate: conda activate heat-stress
+# Update:   conda env update -f environment.yml --prune
+#
+# For headless (no-display) plotting, set:  export MPLBACKEND=Agg
+
+name: heat-stress
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.12.11
+  - numpy=2.2.0
+  - pandas=2.3.2
+  - scipy=1.15.2
+  - xarray=2025.8.0
+  - dask=2025.5.1
+  - cfgrib=0.9.15.0
+  - eccodes=2.41.0
+  - python-eccodes=2.37.0
+  - netcdf4=1.7.2
+  - geopandas=1.0.1
+  - shapely=2.1.1
+  - pyproj=3.7.1
+  - regionmask=0.13.0
+  - matplotlib-base=3.10.3
+  - cartopy=0.24.0
+  - cmaps=2.0.1
+  - pip
+  - pip:
+      - ecmwf-opendata==0.3.22   # ECMWF open-data client
