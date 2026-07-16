@@ -29,7 +29,7 @@ and operational category maps.
 ## How it works
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[ECMWF open-data<br/>IFS 0.25 deg GRIB2] -->|download_ecmwf_open-data_forecast.py| B[ecmwf_forecasts_YYYYMMDD/]
     B -->|preproc_ecmwf2wbgt.py| C[ecmwf_forecasts4wbgt_YYYYMMDD.nc]
     C -->|calc_spatial_WBGT_forecast.py| D[WBGT_forecast_output_YYYY-MM-DD.nc]
@@ -115,6 +115,24 @@ nighttime), `THRESHOLD` (exceedance level, °C), `EXTENT`, and the `ADMIN0/ADMIN
 shapefiles. Weeks are derived automatically from the run date.
 
 ---
+
+## Example output
+
+Weekly WBGT heat-stress maps produced by `postproc_WBGT_weekly_forecast.py`
+(Greater Horn of Africa, sample run). Each **summary** figure shows, per forecast
+week, the average of the daily maxima, the weekly maximum WBGT, and the frequency
+of threshold exceedance; each **category** figure classifies the weekly peak WBGT
+into operational heat-stress bands with work/rest guidance.
+
+**Daytime (`WBGT_tmax`)**
+
+![Daytime weekly WBGT summary](examples/daytime_weekly_summary.png)
+![Daytime weekly WBGT heat-stress categories](examples/daytime_weekly_categories.png)
+
+**Nighttime (`WBGT_tmin`)**
+
+![Nighttime weekly WBGT summary](examples/nighttime_weekly_summary.png)
+![Nighttime weekly WBGT heat-stress categories](examples/nighttime_weekly_categories.png)
 
 ## Scientific method & citation
 
