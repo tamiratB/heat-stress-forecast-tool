@@ -1,4 +1,4 @@
-# Heat-Stress (WBGT) Forecast Tools
+# Heat-Stress Forecast Tools
 
 First release of a heat-stress forecasting tool for the Greater Horn of Africa,
 developed and tested using ECMWF open-data medium-range forecasts.
