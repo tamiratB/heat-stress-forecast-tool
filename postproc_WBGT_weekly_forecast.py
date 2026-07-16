@@ -16,7 +16,7 @@ the recommended layout for briefing non-specialist decision makers.
 
 Times are handled in East Africa Time (UTC+3) so that "daily" maxima and
 the calendar weeks line up with the local day.
-Developed by: Tamirat. B. Jimma
+Developed by: @ICPAC
 """
 
 import numpy as np

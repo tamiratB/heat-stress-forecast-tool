@@ -1,8 +1,9 @@
+# =============================================================================
 # Download surface GRIB2 files per timestep from ECMWF open-data (IFS 0.25 deg)
 # Native output frequency: 0-144 h every 3 h, 150-360 h every 6 h
 # Full documentation: https://github.com/ecmwf/ecmwf-opendata
-# Developed by: Dr. Tamirat B. Jimma
-
+# Developed by: @ICPAC
+# =============================================================================
 import os
 from time import sleep
 from ecmwf.opendata import Client
