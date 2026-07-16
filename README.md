@@ -216,4 +216,4 @@ liability** for any loss or damage arising from their use.
 
 ## Contact
 
-Dr. Tamirat B. Jimma — ICPAC · tbekele@icpac.net
+
