@@ -29,12 +29,12 @@ step_hours = 6
 
 
 def preprocess(ds):
-
     vt = pd.to_datetime(ds.valid_time.values)
     ds = ds.expand_dims(dim={"time": [vt]})
     ds = ds.drop_vars(["valid_time", "step"], errors="ignore")
 
     return ds
+
 
 def open_level(file_list, filter_keys):
     return xr.open_mfdataset(
@@ -56,8 +56,6 @@ def open_level(file_list, filter_keys):
 
 def prepare_ecmwf(ds):
     ds = ds.sortby("time")
-
-    # Subset domain early to keep memory low
     ds = ds.sel(
         latitude=slice(lat_max, lat_min),
         longitude=slice(lon_min, lon_max)
@@ -85,6 +83,7 @@ data_dir = f"ecmwf_forecasts_{today}"
 files = sorted(glob.glob(f"{data_dir}/ECMWF_sfc_*.grib2"))
 files_wk12 = [f for f in files if 3 <= step_of(f) <= 144]   # 3-hourly segment
 files_wk34 = [f for f in files if step_of(f) >= 150]        # 6-hourly segment
+
 print(f"Opening {len(files)} GRIB2 files "
       f"({len(files_wk12)} 3-hourly + {len(files_wk34)} 6-hourly steps)...")
 
@@ -117,11 +116,12 @@ hours_from_init = ((ds_surface.time.values - t0)
                    / np.timedelta64(1, "h")).astype(int)
 time6_full = ds_surface.time.values[hours_from_init % step_hours == 0]
 
-# (step 0 has no preceding interval, so it is dropped)
+# step 0 has no preceding interval, so it is dropped
 time6 = time6_full[1:]
 h6 = ((time6 - t0) / np.timedelta64(1, "h")).astype(int)
 time6_wk12 = time6[h6 <= 144]   # covered by paired 3-h windows
 time6_wk34 = time6[h6 > 144]    # covered by native 6-h windows
+
 print(f"Output: {len(time6)} 6-hourly steps "
       f"({len(time6_wk12)} from 3-h pairs + {len(time6_wk34)} native 6-h)")
 
@@ -132,6 +132,7 @@ def clean(da):
 
 def to_6h(da):
     return clean(da).chunk({"time": -1}).interp(time=time6, method="linear")
+
 
 mx3 = clean(ds_max3["mx2t3"]).chunk({"time": -1})
 mn3 = clean(ds_min3["mn2t3"]).chunk({"time": -1})
@@ -145,7 +146,7 @@ tmin_wk34 = clean(ds_min6["mn2t6"]).sel(time=time6_wk34)
 tmax = xr.concat([tmax_wk12, tmax_wk34], dim="time").rename("t2max")
 tmin = xr.concat([tmin_wk12, tmin_wk34], dim="time").rename("t2min")
 
-pressure = to_6h(ds_surface["sp"]) # in Pa / 100   # Pa -> hPa
+pressure = to_6h(ds_surface["sp"])
 u10 = to_6h(ds_10m["u10"])
 v10 = to_6h(ds_10m["v10"])
 d2m = to_6h(ds_2m["d2m"])
@@ -210,7 +211,7 @@ ds = xr.Dataset(
             }),
         "ssrd": solar.assign_attrs({
                 "long_name": "Surface solar radiation downwards",
-                "standard_name": "surface_downwelling_shortwave_flux_in_air",
+                "standard_name": "surface_downwelling_shortwave_flux",
                 "units": "J m-2",
                 "description": "Downward shortwave radiation accumulated over the 6 hours"
             }),

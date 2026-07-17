@@ -60,6 +60,7 @@ def nc_write_encoding(ds, compress=False, least_significant_digit=None):
             if least_significant_digit is not None:
                 e["least_significant_digit"] = least_significant_digit
         enc[name] = e
+
     return enc
 
 
@@ -70,12 +71,13 @@ def _safe_divide(
 ) -> xr.DataArray:
 
     safe_den = xr.where(np.abs(den) < floor, floor, den)
+
     return num / safe_den
 
 
 def es_hpa_from_Tk(Tk: xr.DataArray) -> xr.DataArray:
-
     Tc = Tk - 273.15
+
     return 6.112 * np.exp(17.67 * Tc / (Tc + 243.5))
 
 
@@ -107,6 +109,7 @@ def psychrometric_stull_wbt(
         + 0.00391838 * (RH ** 1.5) * np.arctan(0.023101 * RH)
         - 4.686035
     )
+
     return Tw_c + 273.15
 
 
@@ -480,7 +483,7 @@ def compute_Tg(
 ) -> xr.DataArray:
 
     RH = RH.clip(0.0, 100.0)
-    U  = U.clip(min=0.05)
+    U = U.clip(min=0.05)
 
     valid = (
         np.isfinite(Ta) & np.isfinite(U) & np.isfinite(S)

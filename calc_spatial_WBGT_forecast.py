@@ -22,16 +22,22 @@ import wbgt_functions as wbgt
 import os
 
 # solver iteration size, MAX_ITER, should be
-# adjust based on numerical convergence requirement that highly depend on the physical process
-# 200 or less is enough in most cases
+# adjust based on numerical convergence requirement that highly depend on
+# the physical process, 200 or less is enough in most cases
 
 MAX_ITER = 100
 SAVE_DIAGNOSTICS = None  # place holder for future development
 DIAG_LOCATIONS = None    # same
+DEBUG = False           # same
+TEST_YEAR = None         # same
 
 
-def compute_gridded_wbgt(ds, nc_out, max_iter, save_diagnostics=True,
-                         diag_locations=None):
+def compute_gridded_wbgt(ds,
+                         nc_out,
+                         max_iter,
+                         save_diagnostics=True,
+                         diag_locations=None
+                         ):
 
     sp = ds.sp / 100
     ssrd = ds.ssrd
@@ -44,7 +50,10 @@ def compute_gridded_wbgt(ds, nc_out, max_iter, save_diagnostics=True,
             debug=False
         )
 
-    def _solve_wbgt(t2m, rh, label):
+    def _solve_wbgt(t2m,
+                    rh,
+                    label
+                    ):
 
         td = xr.where(d2m > t2m, t2m, d2m)
         Tw, Tg, WBGT = wbgt.compute_WBGT(

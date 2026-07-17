@@ -58,7 +58,7 @@ EXTENT = [21, 52, -12.5, 23.5]
 
 # operational heat-stress categories (WBGT, degC). Bands follow the widely
 # used occupational / sport WBGT flag system (ISO 7243-style reference
-# limits); adjust to your local guidance if needed.
+# limits)
 CAT_BOUNDS = [0, 25, 28, 30, 32, 60]
 
 # -------------------------------------------------------------------------------
@@ -77,15 +77,16 @@ week2_end = today + timedelta(days=14)
 
 WEEKS = {
     f"Week 1 ({week1_start:%d %b}-{week1_end:%d %b})": (
-        week1_start.strftime("%Y-%m-%d"),
-        week1_end.strftime("%Y-%m-%d"),
+            week1_start.strftime("%Y-%m-%d"),
+            week1_end.strftime("%Y-%m-%d"),
     ),
     f"Week 2 ({week2_start:%d %b}-{week2_end:%d %b})": (
-        week2_start.strftime("%Y-%m-%d"),
-        week2_end.strftime("%Y-%m-%d"),
+            week2_start.strftime("%Y-%m-%d"),
+            week2_end.strftime("%Y-%m-%d"),
     ),
 }
 
+# control number of data points in day to avoid next day cold bias
 MIN_STEPS_PER_DAY = 3
 
 proj = ccrs.PlateCarree()
@@ -164,8 +165,7 @@ def clip_to_region(ax, artist):
 
 def weekly_metrics(da_week):
     daily_max = da_week.resample(time="1D").max()
-    steps_per_day = (xr.ones_like(da_week.isel(lat=0, lon=0, drop=True))
-                     .resample(time="1D").sum())
+    steps_per_day = (xr.ones_like(da_week.isel(lat=0, lon=0, drop=True)).resample(time="1D").sum())
     complete = steps_per_day >= MIN_STEPS_PER_DAY
     avg_daily_max = daily_max.where(complete, drop=True).mean("time")
 
