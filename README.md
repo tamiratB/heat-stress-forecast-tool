@@ -99,12 +99,6 @@ If you prefer not to use Git, you can download the latest version of the reposit
 https://github.com/tamiratB/heat-stress-forecast-tool/archive/refs/heads/main.zip
 ```
 
-If the default branch is `master` instead of `main`, use:
-
-```text
-https://github.com/tamiratB/heat-stress-forecast-tool/archive/refs/heads/master.zip
-```
-
 Alternatively, on the GitHub repository page, click **Code** then click **Download ZIP** to download the latest source code.
 
 ---
