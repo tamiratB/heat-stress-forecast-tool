@@ -12,7 +12,7 @@ forecast products, and build confidence in its application for operational heat 
 monitoring and early warning over the Greater Horn of Africa.
 
 The pipeline downloads ECMWF IFS open-data forecasts, derives the meteorological
-inputs required by the forecasting system model, computes gridded **daytime and nighttime WBGT**
+inputs required by the forecasting system, computes gridded **daytime and nighttime WBGT**
 with the Liljegren et al. (2008) method, and produces weekly heat-stress summary
 and operational category maps.
 
