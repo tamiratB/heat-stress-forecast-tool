@@ -219,9 +219,9 @@ liability** for any loss or damage arising from their use.
 
 ## Acknowledgements
 
-- **ECMWF** for providing open-access real-time forecast data.
 - **ICPAC** IGAD Climate Prediction and Applications Centre for developing and
   maintaining the heat-stress forecast system.
+- **ECMWF** for providing open-access real-time forecast data.
 
 ## Contact
 
