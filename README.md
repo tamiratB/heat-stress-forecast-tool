@@ -56,10 +56,10 @@ Requires [conda](https://docs.conda.io/) (Miniconda/Miniforge). All versions are
 pinned in `environment.yml` for reproducibility.
 
 ```bash
-# 1. create the environment
+# create the environment
 conda env create -f environment.yml
 
-# 2. activate it
+# activate it
 conda activate heat-stress
 ```
 
