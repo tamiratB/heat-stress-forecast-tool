@@ -1,7 +1,8 @@
 # Heat-Stress Forecast Tools
 
 First release of a heat-stress forecasting tool for the Greater Horn of Africa,
-developed and tested using ECMWF open-data medium-range forecasts.
+developed and tested using ECMWF open-data medium-range forecasts under the PASSAGE
+project at ICPAC.
 
 The heat stress forecasting tool has been rigorously tested using 80 years of
 historical ERA5 reanalysis data to evaluate its performance across a wide range
@@ -221,6 +222,8 @@ liability** for any loss or damage arising from their use.
 
 - **ICPAC** IGAD Climate Prediction and Applications Centre for developing and
   maintaining the heat-stress forecast system.
+- **CLARE** This work was carried out with financial support from the UK Government's Foreign, Commonwealth & Development Office and the International Development Research Centre, Ottawa, Canada as part of the Climate Adaptation and Resilience Program (CLARE).
+- **PASSAGE** This output is part of the PASSAGE Project, funded as part of CLARE"
 - **ECMWF** for providing open-access real-time forecast data.
 
 ## Contact
