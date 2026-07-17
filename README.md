@@ -75,7 +75,7 @@ and clip maps to the region of interest). They are not bundled here. Point the
 `ADMIN0` / `ADMIN1` paths in `postproc_WBGT_weekly_forecast.py` at your own
 shapefiles (default: `/data/shapefiles/gha/gha_admin0.shp` and `..._admin1.shp`).
 
-You can include the following instructions in your README, documentation, or email.
+---
 
 ### Clone the repository using Git
 
@@ -105,7 +105,7 @@ If the default branch is `master` instead of `main`, use:
 https://github.com/tamiratB/heat-stress-forecast-tool/archive/refs/heads/master.zip
 ```
 
-Alternatively, on the GitHub repository page, click **Code** → **Download ZIP** to download the latest source code.
+Alternatively, on the GitHub repository page, click **Code** then click **Download ZIP** to download the latest source code.
 
 ---
 
