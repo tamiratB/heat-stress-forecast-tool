@@ -82,6 +82,9 @@ Run the four stages in order. Each stage stamps its output with the current date
 so a same-day run chains automatically.
 
 ### 1. Download ECMWF open-data forecasts
+
+To download ECMWF forecast data used by this tool, users should register for a free ECMWF account and configure their API credentials as described in the ECMWF API documentation following the link https://github.com/ecmwf/ecmwf-api-client.
+
 ```bash
 python download_ecmwf_open-data_forecast.py
 ```
