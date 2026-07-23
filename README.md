@@ -136,7 +136,7 @@ Runs the main solver twice (warm and cool extreme) and writes
 `WBGT_tmax`, `WBGT_tmin` (daytime / nighttime WBGT, °C) and the components
 `Tw_tmax, Tg_tmax, Tw_tmin, Tg_tmin`.
 
-### 4. Weekly post-processing & maps
+### 4. Weekly forecast post-processing & generate maps
 ```bash
 python postproc_WBGT_weekly_forecast.py
 ```
