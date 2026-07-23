@@ -28,7 +28,7 @@ import os
 MAX_ITER = 100
 SAVE_DIAGNOSTICS = None  # place holder for future development
 DIAG_LOCATIONS = None    # same
-DEBUG = False           # same
+DEBUG = False            # same
 TEST_YEAR = None         # same
 
 
