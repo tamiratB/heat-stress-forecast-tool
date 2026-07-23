@@ -110,7 +110,7 @@ so a same-day run chains automatically.
 
 ### 1. Download ECMWF open-data forecasts
 
-To download ECMWF forecast data used by this tool, users should register for a free ECMWF account and configure their API credentials as described in the ECMWF API documentation following the link https://github.com/ecmwf/ecmwf-api-client. The client is installed automatically during the installation process. You only need to configure the API keys.
+To download ECMWF forecast data used by this tool, users should register for a free ECMWF account and configure their API credentials as described in the ECMWF API documentation following the link https://github.com/ecmwf/ecmwf-api-client. The client is installed automatically during the installation process. You only need to configure the API keys. Then, download the forecast data:
 
 ```bash
 python download_ecmwf_open-data_forecast.py
