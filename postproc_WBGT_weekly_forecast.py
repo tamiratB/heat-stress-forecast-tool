@@ -44,7 +44,7 @@ import os
 ADMIN0 = gpd.read_file("/data/shapefiles/gha/gha_admin0.shp").to_crs("EPSG:4326")
 ADMIN1 = gpd.read_file("/data/shapefiles/gha/gha_admin1.shp").to_crs("EPSG:4326")
 
-# exceedance threshold for freq. metric C  [degC]
+# exceedance threshold for freq. metric [degC]
 THRESHOLD = 29.0
 
 # daytime heat stress (WBGT_tmax) or nighttime stress (WBGT_tmin)
@@ -110,6 +110,7 @@ HEAT_CMAP = ListedColormap(HEAT_CMAP[2:])
 
 def add_map_features(ax):
     ax.set_extent(EXTENT, crs=proj)
+    ax.coastlines()
     ax.add_geometries(ADMIN1['geometry'],
                       crs=ccrs.PlateCarree(),
                       facecolor='none',
