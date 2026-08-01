@@ -48,7 +48,7 @@ ADMIN1 = gpd.read_file("/data/shapefiles/gha/gha_admin1.shp").to_crs("EPSG:4326"
 THRESHOLD = 29.0
 
 # daytime heat stress (WBGT_tmax) or nighttime stress (WBGT_tmin)
-VAR = "WBGT_tmin"
+VAR = "WBGT_tmax"
 
 # timeshift
 TZ_SHIFT_HOURS = 3          # UTC -> East Africa Time
@@ -283,9 +283,9 @@ cbar = fig2.colorbar(pm,
                      ticks=[(CAT_BOUNDS[i] + CAT_BOUNDS[i + 1]) / 2 for i in range(len(CAT_LABELS))]
                      )
 cbar.ax.set_xticklabels(CAT_LABELS, rotation=15, ha="right", fontsize=9)
-cbar.set_label("Peak WBGT heat stress category", fontsize=11)
+cbar.set_label(f"Peak {horizon[VAR].lower()} heat stress category", fontsize=11)
 
-fig2.suptitle("Weekly WBGT Heat Stress Outlooks",
+fig2.suptitle(f"Weekly {horizon[VAR]} Heat Stress Outlooks",
               fontsize=16, fontweight="bold")
 
 out2 = f"plots/{horizon[VAR]}_weekly_forecast_categories_{today.strftime('%Y-%m-%d')}.png"
