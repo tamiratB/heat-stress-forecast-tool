@@ -1,6 +1,6 @@
 # NEWS
 
-Notable changes to the **Heat-Stress (WBGT) Forecast Tools**.
+Notable changes to the **Heat-Stress Forecast Tools**.
 Newest entries first. Dates are release/commit dates (EAT).
 
 ---
@@ -26,7 +26,7 @@ affected, and output file names are unchanged.
 - **Category map legend redesigned for briefing use.** The vertical colorbar
   now carries the class names only (*Low → Extreme*), and a horizontal legend
   below the panels pairs each colour with its WBGT range and recommended
-  action (`< 25 °C - normal activity` … `≥ 32 °C - avoid outdoor work`),
+  action (`< 25 °C - normal activity`...`≥ 32 °C - avoid outdoor work`),
   arranged on two rows with a bold title.
 - **Equal-height category blocks on the colorbar.** The bar is drawn from an
   index-scale `BoundaryNorm` proxy rather than from the contour set, so each
