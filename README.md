@@ -30,6 +30,7 @@ and operational category maps.
 | `wbgt_functions.py` | WBGT library for solver |
 | `postproc_WBGT_weekly_forecast.py` | Weekly summary maps + operational heat-stress category maps |
 | `environment.yml` | Reproducible conda environment (`heat-stress`) |
+| `NEWS.md` | Change log — notable updates, newest first |
 
 ---
 
