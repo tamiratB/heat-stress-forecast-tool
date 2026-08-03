@@ -28,11 +28,6 @@ affected, and output file names are unchanged.
   below the panels pairs each colour with its WBGT range and recommended
   action (`< 25 °C - normal activity`...`≥ 32 °C - avoid outdoor work`),
   arranged on two rows with a bold title.
-- **Equal-height category blocks on the colorbar.** The bar is drawn from an
-  index-scale `BoundaryNorm` proxy rather than from the contour set, so each
-  class gets the same height; previously the wide `0–25` and `32–60` bands
-  took ~90% of the bar between them and squashed the operationally important
-  classes into a sliver.
 - **Colorbar geometry follows the maps.** Its box is read back from the panel
   bounding box after a first draw, so it spans exactly the panel height and
   tracks the right-hand panel's edge. It stays correct when `EXTENT`, the
