@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """"
-================================================================================
 Weekly WBGT heat-stress summary maps from the 6-hourly WBGT forecast.
 
 Input : WBGT_forecast_output_YYYY-MM-DD.nc  (from calc_spatial_WBGT_forecast.py)
@@ -17,8 +16,7 @@ the recommended layout for briefing non-specialist decision makers.
 
 Times are handled in East Africa Time (UTC+3) so that "daily" maxima and
 the calendar weeks line up with the local day.
-Developed by: @ICPAC
-===============================================================================
+Developed by: Tamirat. B. Jimma
 """
 
 import numpy as np
@@ -28,7 +26,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.colors import BoundaryNorm, ListedColormap
 from matplotlib.path import Path as MplPath
-from matplotlib.patches import PathPatch
+from matplotlib.patches import PathPatch, Patch
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from datetime import datetime, timedelta
@@ -44,11 +42,12 @@ import os
 ADMIN0 = gpd.read_file("/data/shapefiles/gha/gha_admin0.shp").to_crs("EPSG:4326")
 ADMIN1 = gpd.read_file("/data/shapefiles/gha/gha_admin1.shp").to_crs("EPSG:4326")
 
-# exceedance threshold for freq. metric [degC]
+# exceedance threshold for freq. metric C  [degC]
 THRESHOLD = 29.0
 
-# daytime heat stress (WBGT_tmax) or nighttime stress (WBGT_tmin)
-VAR = "WBGT_tmax"
+# updated to postprocess both extremes at once; drop one from
+# the list to process it alone.
+VARIABLES = ["WBGT_tmax", "WBGT_tmin"]
 
 # timeshift
 TZ_SHIFT_HOURS = 3          # UTC -> East Africa Time
@@ -58,59 +57,62 @@ EXTENT = [21, 52, -12.5, 23.5]
 
 # operational heat-stress categories (WBGT, degC). Bands follow the widely
 # used occupational / sport WBGT flag system (ISO 7243-style reference
-# limits)
+# limits); adjust to your local guidance if needed.
 CAT_BOUNDS = [0, 25, 28, 30, 32, 60]
 
 # -------------------------------------------------------------------------------
 today = datetime.now()
+
 print(f"\nPost-processing forecasts for WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc...")
 
 # input file (defaults to today's run; override as needed)
-NC_FILE = f"forecasts/WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc"
+NC_FILE = f"WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc"
 
-# forecast weeks, as inclusive EAT calendar-date ranges
 week1_start = today
-week1_end = today + timedelta(days=7)
+week1_end = today + timedelta(days=6)
 
-week2_start = today + timedelta(days=8)
-week2_end = today + timedelta(days=14)
+week2_start = today + timedelta(days=7)
+week2_end = today + timedelta(days=13)
 
 WEEKS = {
     f"Week 1 ({week1_start:%d %b}-{week1_end:%d %b})": (
-            week1_start.strftime("%Y-%m-%d"),
-            week1_end.strftime("%Y-%m-%d"),
+        week1_start.strftime("%Y-%m-%d"),
+        week1_end.strftime("%Y-%m-%d"),
     ),
     f"Week 2 ({week2_start:%d %b}-{week2_end:%d %b})": (
-            week2_start.strftime("%Y-%m-%d"),
-            week2_end.strftime("%Y-%m-%d"),
+        week2_start.strftime("%Y-%m-%d"),
+        week2_end.strftime("%Y-%m-%d"),
     ),
 }
 
-# control number of data points in day to avoid next day cold bias
 MIN_STEPS_PER_DAY = 3
 
 proj = ccrs.PlateCarree()
 
-CAT_LABELS = [
-    "Low (<25): normal activity",
-    "Moderate (25-28): stay hydrated",
-    "High (28-30): limit exertion",
-    "Very high (30-32): curtail outdoor work",
-    "Extreme (>=32): avoid outdoor work",
+CATEGORIES = [
+    ("Low",       "< 25 °C",     "normal activity",       "#4daf4a"),
+    ("Moderate",  "25 - 28 °C",  "stay hydrated",         "#ffff33"),
+    ("High",      "28 - 30 °C",  "limit exertion",        "#ff7f00"),
+    ("Very high", "30 - 32 °C",  "curtail outdoor work",  "#e41a1c"),
+    ("Extreme",   "≥ 32 °C",     "avoid outdoor work",    "#7f0000"),
 ]
-CAT_COLORS = ["#4daf4a", "#ffff33", "#ff7f00", "#e41a1c", "#7f0000"]
+
+CAT_NAMES = [c[0] for c in CATEGORIES]
+CAT_RANGES = [c[1] for c in CATEGORIES]
+CAT_ADVICE = [c[2] for c in CATEGORIES]
+CAT_COLORS = [c[3] for c in CATEGORIES]
+
+assert len(CATEGORIES) == len(CAT_BOUNDS) - 1, \
+    "CATEGORIES and CAT_BOUNDS are out of step"
 
 HEAT_CMAP = cmaps.gui_default(np.linspace(0, 1, 22))
 FREQ_CMAP = cmaps.prcp_1(np.linspace(0, 1, 17))
-
-# remove first and last colors
 FREQ_CMAP = ListedColormap(FREQ_CMAP[:-3])
 HEAT_CMAP = ListedColormap(HEAT_CMAP[2:])
 
 
 def add_map_features(ax):
     ax.set_extent(EXTENT, crs=proj)
-    ax.coastlines()
     ax.add_geometries(ADMIN1['geometry'],
                       crs=ccrs.PlateCarree(),
                       facecolor='none',
@@ -166,7 +168,8 @@ def clip_to_region(ax, artist):
 
 def weekly_metrics(da_week):
     daily_max = da_week.resample(time="1D").max()
-    steps_per_day = (xr.ones_like(da_week.isel(lat=0, lon=0, drop=True)).resample(time="1D").sum())
+    steps_per_day = (xr.ones_like(da_week.isel(lat=0, lon=0, drop=True))
+                     .resample(time="1D").sum())
     complete = steps_per_day >= MIN_STEPS_PER_DAY
     avg_daily_max = daily_max.where(complete, drop=True).mean("time")
 
@@ -183,12 +186,6 @@ ghaMask = regionmask.mask_geopandas(ADMIN0,
                                     ds.lat
                                     )
 ds = ds.where(~ghaMask.isnull())
-da = ds[VAR]
-
-week_data = {name: da.sel(time=slice(start, end))
-             for name, (start, end) in WEEKS.items()}
-
-metrics = {name: weekly_metrics(sub) for name, sub in week_data.items()}
 
 A_levels = np.linspace(23, 33, 11)
 B_levels = np.linspace(23, 33, 11)
@@ -199,95 +196,168 @@ horizon = {
     "WBGT_tmin": "Nighttime"
     }
 
-COLS = [
-    (f"{horizon[VAR]} (weekly mean)", HEAT_CMAP, A_levels, "WBGT (°C)"),
-    (f"{horizon[VAR]} (maximum)", HEAT_CMAP, B_levels, "WBGT (°C)"),
-    (f"Frequency WBGT > {THRESHOLD:.0f}°C", FREQ_CMAP, freq_levels, "% of time"),
-]
+
+def plot_summary(var, da, metrics):
+    """3-metric x n-week overview figure (mean, maximum, exceedance frequency)."""
+    cols = [
+        (f"{horizon[var]} (weekly mean)", HEAT_CMAP, A_levels, "WBGT (°C)"),
+        (f"{horizon[var]} (maximum)", HEAT_CMAP, B_levels, "WBGT (°C)"),
+        (f"Frequency WBGT > {THRESHOLD:.0f}°C", FREQ_CMAP, freq_levels, "% of time"),
+    ]
+
+    nrows, ncols = len(WEEKS), 3
+    fig = plt.figure(figsize=(3.5 * ncols, 4.2 * nrows))
+    ims = [None, None, None]
+
+    for r, (wname, m) in enumerate(metrics.items()):
+        for c in range(3):
+            ax = fig.add_subplot(nrows, ncols, r * ncols + c + 1, projection=proj)
+            title, cmap, levels, _ = cols[c]
+            ims[c] = ax.contourf(da.lon,
+                                 da.lat,
+                                 m[c],
+                                 levels=levels,
+                                 cmap=cmap,
+                                 extend="max" if c == 2 else "both",
+                                 transform=proj
+                                 )
+            add_map_features(ax)
+            if r == 0:
+                ax.set_title(title, fontsize=13, fontweight="bold")
+            if c == 0:
+                ax.text(-0.18, 0.5, wname, transform=ax.transAxes,
+                        rotation=90, va="center", ha="center",
+                        fontsize=13, fontweight="bold")
+
+    for c in range(3):
+        left = 0.09 + c * 0.315
+        cax = fig.add_axes([left, 0.055, 0.22, 0.014])
+        cb = fig.colorbar(ims[c],
+                          cax=cax,
+                          orientation="horizontal"
+                          )
+        cb.set_label(cols[c][3], fontsize=11)
+
+    fig.suptitle(f"Weekly {horizon[var]} Heat Stress Summary",
+                 fontsize=17,
+                 fontweight="bold",
+                 y=1.0
+                 )
+    fig.subplots_adjust(left=0.06,
+                        right=0.98,
+                        top=0.93,
+                        bottom=0.10,
+                        wspace=0.12,
+                        hspace=0.15
+                        )
+
+    out = f"plots/{horizon[var]}_weekly_forecast_summary_{today.strftime('%Y-%m-%d')}.png"
+    fig.savefig(out,
+                dpi=200,
+                bbox_inches="tight"
+                )
+    plt.close(fig)
+    print(f"Saved: {out}")
+
+
+def plot_categories(var, da, metrics):
+    """Operational category map of the weekly peak WBGT, one panel per week."""
+    fig = plt.figure(figsize=(5.4 * len(WEEKS) + 1.2, 7.0))
+    map_axes = []
+    for i, (wname, m) in enumerate(metrics.items()):
+        ax = fig.add_subplot(1, len(WEEKS), i + 1, projection=proj)
+        map_axes.append(ax)
+        pm = ax.contourf(da.lon,
+                         da.lat,
+                         m[1],
+                         levels=CAT_BOUNDS,
+                         colors=CAT_COLORS,
+                         extend="neither",
+                         transform=proj
+                         )
+        clip_to_region(ax, pm)
+        add_map_features(ax)
+        ax.set_title(wname, fontsize=14, fontweight="bold")
+
+    fig.subplots_adjust(left=0.04,
+                        right=0.88,
+                        top=0.90,
+                        bottom=0.19,
+                        wspace=0.10
+                        )
+
+    cat_cmap = ListedColormap(CAT_COLORS)
+    cat_norm = BoundaryNorm(np.arange(len(CATEGORIES) + 1), cat_cmap.N)
+
+    fig.canvas.draw()
+    panel = map_axes[-1].get_position()
+
+    cax = fig.add_axes([panel.x1 + 0.025, panel.y0, 0.016, panel.height])
+    cbar = fig.colorbar(plt.cm.ScalarMappable(cmap=cat_cmap, norm=cat_norm),
+                        cax=cax,
+                        orientation="vertical",
+                        ticks=np.arange(len(CATEGORIES)) + 0.5
+                        )
+    cbar.ax.set_yticklabels(CAT_NAMES, fontsize=11)
+    cbar.ax.tick_params(length=0)
+    cbar.outline.set_linewidth(0.6)
+    cbar.set_label("Heat stress category",
+                   fontsize=11,
+                   fontweight="bold",
+                   labelpad=10
+                   )
+
+    legend_handles = [
+        Patch(facecolor=color,
+              edgecolor="black",
+              linewidth=0.6,
+              label=f"{rng}  :  {advice}")
+        for (_, rng, advice, color) in CATEGORIES
+    ]
+
+    LEGEND_ROWS = 2
+
+    ncol = int(np.ceil(len(legend_handles) / LEGEND_ROWS))
+    legend_handles = [legend_handles[r * ncol + c]
+                      for c in range(ncol)
+                      for r in range(LEGEND_ROWS)
+                      if r * ncol + c < len(legend_handles)]
+
+    leg = fig.legend(handles=legend_handles,
+                     loc="lower center",
+                     bbox_to_anchor=(0.46, 0.01),
+                     ncol=ncol,
+                     fontsize=10,
+                     frameon=True,
+                     handlelength=1.4,
+                     handleheight=1.0,
+                     columnspacing=1.6,
+                     title="WBGT range and recommended action",
+                     title_fontsize=11,
+                     )
+    leg.get_title().set_fontweight("bold")
+
+    fig.suptitle(f"Weekly {horizon[var]} WBGT Heat Stress Outlooks",
+                 fontsize=16, fontweight="bold")
+
+    out = f"plots/{horizon[var]}_weekly_forecast_categories_{today.strftime('%Y-%m-%d')}.png"
+    fig.savefig(out, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved: {out}")
+
 
 os.makedirs('plots', exist_ok=True)
 
-nrows, ncols = len(WEEKS), 3
-fig = plt.figure(figsize=(5.2 * ncols, 4.2 * nrows))
-ims = [None, None, None]
+for VAR in VARIABLES:
+    if VAR not in ds:
+        print(f"  {VAR} not in {NC_FILE} - skipped")
+        continue
 
-for r, (wname, m) in enumerate(metrics.items()):
-    for c in range(3):
-        ax = plt.subplot(nrows, ncols, r * ncols + c + 1, projection=proj)
-        title, cmap, levels, _ = COLS[c]
-        ims[c] = ax.contourf(da.lon,
-                             da.lat,
-                             m[c],
-                             levels=levels,
-                             cmap=cmap,
-                             extend="max" if c == 2 else "both",
-                             transform=proj
-                             )
-        add_map_features(ax)
-        if r == 0:
-            ax.set_title(title, fontsize=13, fontweight="bold")
-        if c == 0:
-            ax.text(-0.18, 0.5, wname, transform=ax.transAxes,
-                    rotation=90, va="center", ha="center",
-                    fontsize=13, fontweight="bold")
+    print(f"\n{horizon[VAR]} ({VAR}):")
+    da = ds[VAR]
+    week_data = {name: da.sel(time=slice(start, end))
+                 for name, (start, end) in WEEKS.items()}
+    metrics = {name: weekly_metrics(sub) for name, sub in week_data.items()}
 
-for c in range(3):
-    left = 0.09 + c * 0.315
-    cax = fig.add_axes([left, 0.055, 0.22, 0.014])
-    cb = plt.colorbar(ims[c],
-                      cax=cax,
-                      orientation="horizontal"
-                      )
-    cb.set_label(COLS[c][3], fontsize=11)
-
-fig.suptitle("Weekly WBGT Heat Stress Summary",
-             fontsize=17,
-             fontweight="bold",
-             y=0.99
-             )
-plt.subplots_adjust(left=0.06,
-                    right=0.98,
-                    top=0.93,
-                    bottom=0.10,
-                    wspace=0.12,
-                    hspace=0.15
-                    )
-
-out1 = f"plots/{horizon[VAR]}_weekly_forecast_summary_{today.strftime('%Y-%m-%d')}.png"
-plt.savefig(out1,
-            dpi=200,
-            bbox_inches="tight"
-            )
-print(f"Saved: {out1}")
-
-fig2 = plt.figure(figsize=(6.2 * len(WEEKS), 6.4))
-for i, (wname, m) in enumerate(metrics.items()):
-    ax = plt.subplot(1, len(WEEKS), i + 1, projection=proj)
-    pm = ax.contourf(da.lon,
-                     da.lat,
-                     m[1],          # m[1] = weekly max WBGT
-                     levels=CAT_BOUNDS,
-                     colors=CAT_COLORS,
-                     extend="neither",
-                     transform=proj
-                     )
-    clip_to_region(ax, pm)
-    add_map_features(ax)
-    ax.set_title(wname, fontsize=14, fontweight="bold")
-
-# shared categorical legend
-cbar = fig2.colorbar(pm,
-                     ax=fig2.axes,
-                     orientation="horizontal",
-                     fraction=0.05, pad=0.08,
-                     ticks=[(CAT_BOUNDS[i] + CAT_BOUNDS[i + 1]) / 2 for i in range(len(CAT_LABELS))]
-                     )
-cbar.ax.set_xticklabels(CAT_LABELS, rotation=15, ha="right", fontsize=9)
-cbar.set_label(f"Peak {horizon[VAR].lower()} heat stress category", fontsize=11)
-
-fig2.suptitle(f"Weekly {horizon[VAR]} Heat Stress Outlooks",
-              fontsize=16, fontweight="bold")
-
-out2 = f"plots/{horizon[VAR]}_weekly_forecast_categories_{today.strftime('%Y-%m-%d')}.png"
-plt.savefig(out2, dpi=200, bbox_inches="tight")
-print(f"Saved: {out2}")
+    plot_summary(VAR, da, metrics)
+    plot_categories(VAR, da, metrics)
