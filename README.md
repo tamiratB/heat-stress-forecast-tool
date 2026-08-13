@@ -54,30 +54,6 @@ for the **hot (daytime)** and **cool (nighttime)** part of each 6-hour window.
 
 ## Installation
 
-Requires [conda](https://docs.conda.io/) (Miniconda/Miniforge). All versions are
-pinned in `environment.yml` for reproducibility.
-
-```bash
-# create the environment
-conda env create -f environment.yml
-
-# activate it
-conda activate heat-stress
-```
-
-For headless / server runs (saving figures without a display):
-
-```bash
-export MPLBACKEND=Agg
-```
-
-**Admin boundary shapefiles** are required by the post-processing step (to mask
-and clip maps to the region of interest). They are not bundled here. Point the
-`ADMIN0` / `ADMIN1` paths in `postproc_WBGT_weekly_forecast.py` at your own
-shapefiles (default: `/data/shapefiles/gha/gha_admin0.shp` and `..._admin1.shp`).
-
----
-
 ### Clone the repository using Git
 
 If you have Git installed, clone the repository with:
@@ -101,6 +77,32 @@ https://github.com/tamiratB/heat-stress-forecast-tool/archive/refs/heads/main.zi
 ```
 
 Alternatively, on the GitHub repository page, this page, click **Code** (top right green icon) then click **Download ZIP** to download the latest source code.
+
+---
+
+Once you have cloned the repository or extracted the ZIP archive, follow the steps below.
+
+Requires [conda](https://docs.conda.io/) (Miniconda/Miniforge). All versions are
+pinned in `environment.yml` for reproducibility.
+
+```bash
+# create the environment
+conda env create -f environment.yml
+
+# activate it
+conda activate heat-stress
+```
+
+For headless / server runs (saving figures without a display):
+
+```bash
+export MPLBACKEND=Agg
+```
+
+**Admin boundary shapefiles** are required by the post-processing step (to mask
+and clip maps to the region of interest). They are not bundled here. Point the
+`ADMIN0` / `ADMIN1` paths in `postproc_WBGT_weekly_forecast.py` at your own
+shapefiles (default: `/data/shapefiles/gha/gha_admin0.shp` and `..._admin1.shp`).
 
 ---
 
