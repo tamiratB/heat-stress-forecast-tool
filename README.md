@@ -77,13 +77,12 @@ Alternatively, on the GitHub repository page, this page, click **Code** (top rig
 Once you have cloned the repository or extracted the ZIP archive, follow the steps below.
 
 Requires [conda](https://docs.conda.io/) (Miniconda/Miniforge). All versions are
-pinned in `environment.yml` for reproducibility. Then navigate to the project directory:
+pinned in `environment.yml` for reproducibility.
 
 ```bash
+# navigate to the project directory
 cd heat-stress-forecast-tool
-```
 
-```bash
 # create the environment
 conda env create -f environment.yml
 
