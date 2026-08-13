@@ -62,12 +62,6 @@ If you have Git installed, clone the repository with:
 git clone https://github.com/tamiratB/heat-stress-forecast-tool.git
 ```
 
-Then navigate to the project directory:
-
-```bash
-cd heat-stress-forecast-tool
-```
-
 ### Download the repository as a ZIP file
 
 If you prefer not to use Git, you can download the latest version of the repository as a ZIP archive:
@@ -83,7 +77,11 @@ Alternatively, on the GitHub repository page, this page, click **Code** (top rig
 Once you have cloned the repository or extracted the ZIP archive, follow the steps below.
 
 Requires [conda](https://docs.conda.io/) (Miniconda/Miniforge). All versions are
-pinned in `environment.yml` for reproducibility.
+pinned in `environment.yml` for reproducibility. Then navigate to the project directory:
+
+```bash
+cd heat-stress-forecast-tool
+```
 
 ```bash
 # create the environment
