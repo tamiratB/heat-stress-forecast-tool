@@ -66,7 +66,7 @@ today = datetime.now()
 print(f"\nPost-processing forecasts for WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc...")
 
 # input file (defaults to today's run; override as needed)
-NC_FILE = f"WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc"
+NC_FILE = f"forecasts/WBGT_forecast_output_{today.strftime('%Y-%m-%d')}.nc"
 
 week1_start = today
 week1_end = today + timedelta(days=6)
