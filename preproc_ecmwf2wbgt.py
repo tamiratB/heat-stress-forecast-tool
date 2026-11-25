@@ -230,7 +230,7 @@ ds = xr.Dataset(
 drop_vars = [v for v in ["surface", "heightAboveGround", "valid_time"] if v in ds.variables]
 ds = ds.drop_vars(drop_vars, errors="ignore")
 
-out_file = "ecmwf_forecasts4wbgt_{today}.nc"
+out_file = f"ecmwf_forecasts4wbgt_{today}.nc"
 
 print("Writing output file...")
 encoding = {v: {"zlib": True, "complevel": 4} for v in ds.data_vars}
